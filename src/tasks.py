@@ -8,7 +8,7 @@ from utils import async_function_example, sync_function_example
 celery = Celery(broker=config.CELERY_BROKER_URL)
 
 
-def async_to_sync(func, *args, **kwargs):
+def run_async_task(func, *args, **kwargs):
     """
     Запуск таска через event-loop.
 
@@ -19,7 +19,7 @@ def async_to_sync(func, *args, **kwargs):
 
 @celery.task
 def task_async_function_example(*args, **kwargs):
-    async_to_sync(async_function_example, *args, **kwargs)
+    run_async_task(async_function_example, *args, **kwargs)
 
 
 @celery.task
