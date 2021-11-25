@@ -1,0 +1,5 @@
+FROM python:3.9.5-slim-buster
+
+RUN pip install fastapi celery uvicorn pydantic redis sentry_sdk
+
+COPY . .

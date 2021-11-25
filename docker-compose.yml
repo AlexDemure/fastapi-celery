@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+
+  core:
+    build:
+      context: src
+      dockerfile: Dockerfile.core
+    container_name: core
+    hostname: core
+    network_mode: "host"
+    ports:
+      - "7040:7040"
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - celery
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    build:
+      context: src
+      dockerfile: Dockerfile.celery
+    container_name: celery
+    hostname: celery
+    command: celery -A tasks.celery worker --loglevel=info
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
